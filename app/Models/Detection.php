@@ -9,7 +9,7 @@ class Detection extends Model
     protected $fillable = [
         'vehicle_id',
         'police_unit_id',
-        'detection_time',
+        'detected_at',
         'location',
         'detected_model',
         'detected_color',

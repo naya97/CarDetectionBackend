@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('detection_alerts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('detection_id')->constrained()->onDelete('cascade');
             $table->string('alert_type')->nullable();
             $table->enum('severity', ['low', 'medium', 'high'])->nullable();
             $table->string('message')->nullable();

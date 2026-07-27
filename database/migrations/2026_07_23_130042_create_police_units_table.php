@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->integer('vehicle_number')->unique();
             $table->boolean('is_active')->default(false);
-            $table->datetimes('last_active_at')->nullable();
+            $table->dateTime('last_active_at')->nullable();
             $table->timestamps();
         });
     }
