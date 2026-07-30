@@ -39,9 +39,4 @@ class DetectionAlert extends Model
     {
         return $query->where('seen', false);
     }
-
-    public function scopeWanted(Builder $query): Builder
-    {
-        return $query->whereHas('vehicle.blacklists', fn (Builder $q) => $q->wanted());
-    }
 }
