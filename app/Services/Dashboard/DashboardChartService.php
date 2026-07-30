@@ -45,12 +45,24 @@ class DashboardChartService
         $start = today()->subDays($days - 1)->startOfDay();
         $end = today()->endOfDay();
 
-        $total = Detection::betweenDates($start, $end)->count();
-        $matched = Detection::betweenDates($start, $end)->matched()->count();
+        // $total = Detection::betweenDates($start, $end)->count();
+        // $matched = Detection::betweenDates($start, $end)->matched()->count();
+
+        $stats = Detection::query()
+            ->betweenDates($start, $end)
+            ->selectRaw("
+                COUNT(*) as total,
+                SUM(CASE WHEN match_status = 'match' THEN 1 ELSE 0 END) as matched
+            ")
+        ->first();
+
+        $total = (int) $stats->total;
+        $matched = (int) $stats->matched;
+        $unmatched = $total - $matched;
 
         return [
             'matched' => $matched,
-            'unmatched' => $total - $matched,
+            'unmatched' => $unmatched,
             'matched_percentage' => $total > 0 ? round(($matched / $total) * 100, 1) : 0.0,
             'unmatched_percentage' => $total > 0 ? round((($total - $matched) / $total) * 100, 1) : 0.0,
         ];

@@ -15,7 +15,7 @@ class Vehicle extends Model
         'owner_name',
     ];
 
-    public function blacklists()
+    public function blacklist()
     {
         return $this->hasMany(Blacklist::class);
     }

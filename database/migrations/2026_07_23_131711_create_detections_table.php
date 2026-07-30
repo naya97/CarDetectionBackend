@@ -25,7 +25,7 @@ return new class extends Migration
             $table->double('confidence')->nullable();
             $table->enum('match_status', ['match', 'no_match'])->nullable();
 
-            $table->datetimes('detected_at')->nullable();
+            $table->dateTime('detected_at')->nullable();
             $table->string('vehicle_image_path')->nullable();
             $table->string('plate_image_path')->nullable();
 

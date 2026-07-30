@@ -43,7 +43,6 @@ class Detection extends Model
         return $this->hasMany(DetectionAlert::class);
     }
 
-
     public function scopeDetectedOn(Builder $query, Carbon $date): Builder
     {
         return $query->whereDate('detected_at', $date);
@@ -67,5 +66,10 @@ class Detection extends Model
     public function scopeMatched(Builder $query): Builder
     {
         return $query->where('match_status', 'match');
+    }
+
+    public function scopeWanted(Builder $query): Builder
+    {
+        return $query->whereHas('vehicle.blacklist', fn (Builder $q) => $q->wanted());
     }
 }
