@@ -70,6 +70,6 @@ class Detection extends Model
 
     public function scopeWanted(Builder $query): Builder
     {
-        return $query->whereHas('vehicle.blacklist', fn (Builder $q) => $q->wanted());
+        return $query->whereHas('vehicle.latestBlacklist', fn (Builder $q) => $q->wanted());
     }
 }
