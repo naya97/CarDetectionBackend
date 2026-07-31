@@ -19,3 +19,11 @@ Route::prefix('admin/vehicles')->controller(\App\Http\Controllers\Admin\VehicleC
     Route::get('filter-options', 'filterOptions');
     Route::get('/', 'index');
 });
+
+Route::prefix('admin/blacklist')->controller(\App\Http\Controllers\Admin\BlacklistController::class)->group(function () {
+    Route::get('stats', 'stats');
+    Route::get('/', 'index');
+    Route::post('/', 'store');
+    Route::put('{blacklist}', 'update');
+    Route::delete('{blacklist}', 'destroy');
+});

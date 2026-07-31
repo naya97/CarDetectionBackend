@@ -41,7 +41,7 @@ class DashboardStatsService
         $today = DetectionAlert::today()->count();
         $thisWeek = DetectionAlert::thisWeek()->count();
         $lastWeek = DetectionAlert::query()
-            ->whereBetween('created_at', [
+            ->whereBetween('created_saeat', [
                 now()->subWeek()->startOfWeek(),
                 now()->subWeek()->endOfWeek(),
             ])
