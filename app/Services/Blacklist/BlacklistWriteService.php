@@ -20,7 +20,6 @@ class BlacklistWriteService
         return $blacklist;
     }
 
-    // Doesn't delete the row — preserves history, just deactivates it
     public function remove(Blacklist $blacklist): Blacklist
     {
         $blacklist->update(['wanted' => false]);

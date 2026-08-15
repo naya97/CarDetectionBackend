@@ -2,62 +2,118 @@
 
 namespace Database\Factories;
 
-use App\Models\PoliceUnit;
+use App\Models\Detection;
 use App\Models\Vehicle;
+use App\Models\Video;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Collection;
 
 class DetectionFactory extends Factory
 {
-    private const TYPES = ['سيدان', 'دفع رباعي', 'هاتشباك', 'شاحنة', 'كروس أوفر'];
-    private const COLORS = ['أبيض', 'أسود', 'فضي', 'أحمر', 'أزرق', 'رمادي', 'أخرى'];
-    private const LOCATIONS = [
-        'طريق الملك فهد', 'طريق الملك عبدالله', 'الدائري الشرقي', 'الدائري الشمالي',
-        'شارع التحلية', 'طريق الحرمين', 'مدخل المدينة الشمالي', 'بوابة الميناء',
-    ];
+    protected $model = Detection::class;
 
-    // Cached once per seeding run (avoids one query per row for 1000s of detections)
-    private static ?Collection $vehicles = null;
-    private static ?array $policeUnitIds = null;
+    private const TYPES = ['سيدان', 'دفع رباعي', 'هاتشباك', 'شاحنة', 'كروس أوفر'];
+    private const COLORS = ['أبيض', 'أسود', 'فضي', 'أحمر', 'أزرق', 'رمادي', 'أخضر', 'ذهبي'];
 
     public function definition(): array
     {
-        $isMatch = fake()->boolean(85);
-        $vehicle = $isMatch ? $this->vehiclesPool()->random() : null;
+        $video = Video::inRandomOrder()->first() ?? Video::factory()->create();
+        $isMatch = fake()->boolean(75);
+        $vehicle = $isMatch ? Vehicle::inRandomOrder()->first() : null;
+
+        // Generate AI values (may differ from DB for mismatch simulation)
+        $aiColor = fake()->randomElement(self::COLORS);
+        $aiType = fake()->randomElement(self::TYPES);
+        $aiModel = fake()->randomElement([
+            'تويوتا كامري',
+            'هوندا أكورد',
+            'نيسان ألتيما',
+            'هيونداي سوناتا',
+            'كيا سبورتاج',
+            'مرسيدس C200',
+            'بي إم دبليو X5',
+            'لكزس ES'
+        ]);
+
+        // Calculate mismatches
+        $colorMismatch = $vehicle ? (strtolower($aiColor) !== strtolower($vehicle->color)) : false;
+        $typeMismatch = $vehicle ? (strtolower($aiType) !== strtolower($vehicle->type)) : false;
+        $modelMismatch = $vehicle ? (strtolower($aiModel) !== strtolower($vehicle->model)) : false;
+
+        // Calculate risk score
+        $colorConf = fake()->randomFloat(2, 0.6, 0.98);
+        $typeConf = fake()->randomFloat(2, 0.6, 0.98);
+        $modelConf = fake()->randomFloat(2, 0.6, 0.98);
+
+        $score = 0;
+        if ($colorMismatch && $colorConf >= 0.50) $score += $colorConf * 1;
+        if ($typeMismatch && $typeConf >= 0.50) $score += $typeConf * 3;
+        if ($modelMismatch && $modelConf >= 0.50) $score += $modelConf * 4;
+
+        $score = round($score, 2);
+
+        // Determine severity
+        $severity = null;
+        $violationType = null;
+        $message = null;
+
+        if ($score >= 4) {
+            $severity = 'عالي';
+            $violationType = 'vehicle_mismatch';
+        } elseif ($score >= 2) {
+            $severity = 'متوسط';
+            $violationType = 'vehicle_mismatch';
+        } elseif ($score > 0) {
+            $severity = 'منخفض';
+            $violationType = 'vehicle_mismatch';
+        }
+
+        // Build message
+        if ($violationType) {
+            $parts = [];
+            if ($colorMismatch) $parts[] = 'color';
+            if ($typeMismatch) $parts[] = 'type';
+            if ($modelMismatch) $parts[] = 'model';
+
+            if (count($parts) === 1) {
+                $message = 'Detected ' . $parts[0] . ' differs from the registered vehicle.';
+            } elseif (count($parts) === 2) {
+                $message = 'Detected ' . $parts[0] . ' and ' . $parts[1] . ' differ from the registered vehicle.';
+            } elseif (count($parts) === 3) {
+                $message = 'Detected ' . $parts[0] . ', ' . $parts[1] . ' and ' . $parts[2] . ' differ from the registered vehicle.';
+            }
+        }
 
         return [
+            'video_id' => $video->id,
             'vehicle_id' => $vehicle?->id,
-            'police_unit_id' => fake()->randomElement($this->policeUnitIdsPool()),
-            'location' => fake()->randomElement(self::LOCATIONS),
-            'detected_model' => $vehicle?->model ?? fake()->randomElement(['غير معروف', 'طراز غير مسجل']),
-            'detected_color' => $vehicle?->color ?? fake()->randomElement(self::COLORS),
-            'detected_type' => $vehicle?->type ?? fake()->randomElement(self::TYPES),
+            'track_id' => fake()->numberBetween(1, 100),
             'detected_plate_number' => $vehicle?->plate_number ?? $this->generateRandomPlate(),
-            'confidence' => $isMatch
-                ? fake()->randomFloat(2, 0.85, 0.99)
-                : fake()->randomFloat(2, 0.40, 0.84),
-            'match_status' => $isMatch ? 'match' : 'no_match',
+            'plate_confidence' => fake()->randomFloat(2, 0.70, 0.99),
+            'detected_model' => $aiModel,
+            'model_confidence' => $modelConf,
+            'detected_type' => $aiType,
+            'type_confidence' => $typeConf,
+            'detected_color' => $aiColor,
+            'color_confidence' => $colorConf,
+            'vehicle_image_path' => "vehicles/{$video->id}/track_" . fake()->numberBetween(1, 50) . '.jpg',
+            'plate_image_path' => "plates/{$video->id}/plate_" . fake()->numberBetween(1, 50) . '.jpg',
+            'plate_match' => $vehicle !== null,
+            'color_mismatch' => $colorMismatch,
+            'type_mismatch' => $typeMismatch,
+            'model_mismatch' => $modelMismatch,
+            'plate_mismatch' => fake()->boolean(5), // 5% chance of blacklist match
+            'risk_score' => $score,
+            'severity' => $severity,
+            'violation_type' => $violationType,
+            'message' => $message,
             'detected_at' => fake()->dateTimeBetween('-30 days', 'now'),
-            'vehicle_image_path' => 'detections/vehicles/' . fake()->uuid() . '.jpg',
-            'plate_image_path' => 'detections/plates/' . fake()->uuid() . '.jpg',
         ];
-    }
-
-    private function vehiclesPool(): Collection
-    {
-        return self::$vehicles ??= Vehicle::select('id', 'plate_number', 'color', 'type', 'model')->get();
-    }
-
-    private function policeUnitIdsPool(): array
-    {
-        return self::$policeUnitIds ??= PoliceUnit::pluck('id')->all();
     }
 
     private function generateRandomPlate(): string
     {
         $letters = ['ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ر', 'ز', 'س', 'ش', 'ص', 'ط', 'ع', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'];
         $plateLetters = collect($letters)->random(3)->implode(' ');
-
         return "{$plateLetters} " . fake()->numberBetween(1, 9999);
     }
 }

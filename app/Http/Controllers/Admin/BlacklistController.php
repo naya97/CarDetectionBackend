@@ -19,8 +19,7 @@ class BlacklistController extends Controller
         private readonly BlacklistStatsService $statsService,
         private readonly BlacklistListingService $listingService,
         private readonly BlacklistWriteService $writeService,
-    ) {
-    }
+    ) {}
 
     public function stats()
     {

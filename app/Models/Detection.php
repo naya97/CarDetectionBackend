@@ -2,77 +2,61 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Detection extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'video_id',
         'vehicle_id',
-        'police_unit_id',
-        'detected_at',
-        'location',
-        'detected_model',
-        'detected_color',
-        'detected_type',
+        'track_id',
         'detected_plate_number',
-        'confidence',
-        'match_status',
+        'plate_confidence',
+        'detected_model',
+        'model_confidence',
+        'detected_type',
+        'type_confidence',
+        'detected_color',
+        'color_confidence',
         'vehicle_image_path',
         'plate_image_path',
+        'plate_match',
+        'color_mismatch',
+        'type_mismatch',
+        'model_mismatch',
+        'plate_mismatch',
+        'risk_score',
+        'severity',
+        'violation_type',
+        'message',
+        'detected_at',
     ];
 
     protected $casts = [
+        'plate_confidence' => 'float',
+        'model_confidence' => 'float',
+        'type_confidence' => 'float',
+        'color_confidence' => 'float',
+        'risk_score' => 'float',
+        'plate_match' => 'boolean',
+        'color_mismatch' => 'boolean',
+        'type_mismatch' => 'boolean',
+        'model_mismatch' => 'boolean',
+        'plate_mismatch' => 'boolean',
         'detected_at' => 'datetime',
-        'confidence' => 'float',
     ];
 
-    public function vehicle()
+    public function video(): BelongsTo
+    {
+        return $this->belongsTo(Video::class);
+    }
+
+    public function vehicle(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class);
-    }
-
-    public function policeUnit()
-    {
-        return $this->belongsTo(PoliceUnit::class);
-    }
-
-    public function detectionAlerts()
-    {
-        return $this->hasMany(DetectionAlert::class);
-    }
-
-    public function scopeDetectedOn(Builder $query, Carbon $date): Builder
-    {
-        return $query->whereDate('detected_at', $date);
-    }
-
-    public function scopeToday(Builder $query): Builder
-    {
-        return $query->detectedOn(today());
-    }
-
-    public function scopeYesterday(Builder $query): Builder
-    {
-        return $query->detectedOn(today()->subDay());
-    }
-
-    public function scopeBetweenDates(Builder $query, Carbon $start, Carbon $end): Builder
-    {
-        return $query->whereBetween('detected_at', [$start, $end]);
-    }
-
-    public function scopeMatched(Builder $query): Builder
-    {
-        return $query->where('match_status', 'match');
-    }
-
-    public function scopeWanted(Builder $query): Builder
-    {
-        return $query->whereHas('vehicle.latestBlacklist', fn (Builder $q) => $q->wanted());
     }
 }

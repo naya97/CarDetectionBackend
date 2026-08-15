@@ -9,10 +9,11 @@ class DashboardStatsResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'active_police_units' => $this->resource['active_police_units'],
-            'scans_today' => $this->resource['scans_today'],
-            'alerts' => $this->resource['alerts'],
+            'videos' => $this->resource['videos'],
+            'detections_today' => $this->resource['detections_today'],
+            'violations_today' => $this->resource['violations_today'],
             'wanted_vehicles' => $this->resource['wanted_vehicles'],
+            'overview' => $this->resource['overview'],
         ];
     }
 }

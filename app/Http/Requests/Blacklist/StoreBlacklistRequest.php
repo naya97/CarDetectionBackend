@@ -9,7 +9,7 @@ class StoreBlacklistRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // no auth system exists yet in this project
+        return true;
     }
 
     public function rules(): array
@@ -17,7 +17,7 @@ class StoreBlacklistRequest extends FormRequest
         return [
             'vehicle_id' => ['required', 'integer', 'exists:vehicles,id'],
             'status' => ['required', 'string', 'max:255'],
-            'priority' => ['required', 'string', Rule::in(['high', 'medium', 'low'])],
+            'priority' => ['required', 'string', Rule::in(['عالي', 'متوسط', 'منخفض'])],
             'wanted' => ['sometimes', 'boolean'],
         ];
     }

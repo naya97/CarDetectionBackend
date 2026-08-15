@@ -29,6 +29,12 @@ return [
     */
 
     'disks' => [
+        'shared' => [
+            'driver' => 'local',
+            'root' => env('STORAGE_BASE_PATH', 'C:/shared_storage'),
+            'url' => env('MEDIA_BASE_URL', 'http://localhost/media'),
+            'visibility' => 'public',
+        ],
 
         'local' => [
             'driver' => 'local',
@@ -41,7 +47,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

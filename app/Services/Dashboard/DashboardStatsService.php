@@ -3,55 +3,66 @@
 namespace App\Services\Dashboard;
 
 use App\Models\Detection;
-use App\Models\DetectionAlert;
-use App\Models\PoliceUnit;
+use App\Models\Video;
+use Carbon\Carbon;
 
 class DashboardStatsService
 {
-    public function getPoliceUnitStats(): array
+    public function getVideoStats(): array
     {
-        $total = PoliceUnit::count();
-        $active = PoliceUnit::active()->count();
+        $total = Video::count();
+        $completed = Video::where('status', 'completed')->count();
+        $processing = Video::where('status', 'processing')->count();
+        $failed = Video::where('status', 'failed')->count();
 
         return [
-            'active' => $active,
             'total' => $total,
-            'percentage' => $total > 0 ? round(($active / $total) * 100, 1) : 0.0,
+            'completed' => $completed,
+            'processing' => $processing,
+            'failed' => $failed,
+            'completion_rate' => $total > 0 ? round(($completed / $total) * 100, 1) : 0.0,
         ];
     }
 
-    public function getScansTodayStats(): array
+    public function getDetectionsTodayStats(): array
     {
-        return $this->buildComparisonStat(
-            Detection::today()->count(),
-            Detection::yesterday()->count()
-        );
+        $today = Detection::whereDate('detected_at', today())->count();
+        $yesterday = Detection::whereDate('detected_at', today()->subDay())->count();
+
+        return $this->buildComparisonStat($today, $yesterday);
+    }
+
+    public function getViolationsTodayStats(): array
+    {
+        $today = Detection::whereDate('detected_at', today())
+            ->whereNotNull('violation_type')
+            ->count();
+        $yesterday = Detection::whereDate('detected_at', today()->subDay())
+            ->whereNotNull('violation_type')
+            ->count();
+
+        return $this->buildComparisonStat($today, $yesterday);
     }
 
     public function getWantedVehiclesStats(): array
     {
-        return $this->buildComparisonStat(
-            Detection::today()->wanted()->count(),
-            Detection::yesterday()->wanted()->count()
-        );
-    }
-
-    public function getAlertsStats(): array
-    {
-        $today = DetectionAlert::today()->count();
-        $thisWeek = DetectionAlert::thisWeek()->count();
-        $lastWeek = DetectionAlert::query()
-            ->whereBetween('created_saeat', [
-                now()->subWeek()->startOfWeek(),
-                now()->subWeek()->endOfWeek(),
-            ])
+        $today = Detection::whereDate('detected_at', today())
+            ->where('plate_mismatch', true)
+            ->count();
+        $yesterday = Detection::whereDate('detected_at', today()->subDay())
+            ->where('plate_mismatch', true)
             ->count();
 
+        return $this->buildComparisonStat($today, $yesterday);
+    }
+
+    public function getOverviewStats(): array
+    {
         return [
-            'today' => $today,
-            'this_week' => $thisWeek,
-            'change_percentage' => $this->calculatePercentageChange($thisWeek, $lastWeek),
-            'trend' => $this->resolveTrend($thisWeek, $lastWeek),
+            'total_videos' => Video::count(),
+            'total_detections' => Detection::count(),
+            'total_violations' => Detection::whereNotNull('violation_type')->count(),
+            'high_violations' => Detection::where('severity', 'high')->count(),
         ];
     }
 
