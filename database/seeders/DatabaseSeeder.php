@@ -202,7 +202,7 @@ class DatabaseSeeder extends Seeder
                 'owner_name' => 'علاء الأمين '
             ],
             [
-                'plate_number' => 'WG65ZFX',
+                'plate_number' => 'NL64OGX',
                 'country_code' => 'Britich',
                 'color' => 'أبيض',
                 'type' => 'minibus',
