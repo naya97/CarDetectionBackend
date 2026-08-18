@@ -15,47 +15,47 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'R183JF',
                 'country_code' => 'Britich',
                 'color' => 'أبيض',
-                'type' => 'Sedan',
-                'model' => 'Lamborghini Hrocan',
+                'type' => 'sports',
+                'model' => 'Lamborghini	Huracan',
                 'owner_name' => 'أحمد المحمد'
             ],
             [
                 'plate_number' => 'N894JV',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'دفع رباعي',
-                'model' => 'BMW 8 Series',
+                'type' => 'sports ',
+                'model' => 'BMW	8 Series',
                 'owner_name' => 'رامي سعيد'
             ],
             [
                 'plate_number' => 'L656XH',
                 'country_code' => 'Britich',
                 'color' => 'أبيض',
-                'type' => 'سيدان',
-                'model' => 'Mercedes_Benz Mercedies_AMG GT',
+                'type' => 'sports',
+                'model' => 'Mercedes-Benz	Mercedes-AMG GT',
                 'owner_name' => 'سارة العلي'
             ],
             [
                 'plate_number' => 'H644LX',
                 'country_code' => 'Britich',
                 'color' => 'أخضر',
-                'type' => 'شاحنة',
-                'model' => 'Lamborghini Aventodor',
+                'type' => 'sports',
+                'model' => 'Lamborghini	Aventador',
                 'owner_name' => 'نايا صالحة'
             ],
             [
                 'plate_number' => 'L605HZ',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'شاحنة',
-                'model' => 'Audi RS 6',
+                'type' => 'hatchback',
+                'model' => 'Audi	RS 6',
                 'owner_name' => 'نور  شاهين'
             ],
             [
                 'plate_number' => 'MW51VSU',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'شاحنة',
+                'type' => 'MPV',
                 'model' => 'Toyota Previa',
                 'owner_name' => 'عمر ساهر'
             ],
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'GX150GJ',
                 'country_code' => 'Britich',
                 'color' => 'أبيض',
-                'type' => 'شاحنة',
+                'type' => 'sedan',
                 'model' => 'BMW 5 Series',
                 'owner_name' => 'زين أحمد'
             ],
@@ -71,8 +71,8 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'KH05ZZK',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'شاحنة',
-                'model' => 'Opei Astra',
+                'type' => 'sedan',
+                'model' => 'Opel Astra',
                 'owner_name' => 'سليمان يوسف'
             ],
 
@@ -80,8 +80,8 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'AP05JEO',
                 'country_code' => 'Britich',
                 'color' => 'فضي',
-                'type' => 'شاحنة',
-                'model' => 'Vauxhal Astra',
+                'type' => 'hatchback',
+                'model' => 'Vauxhall Astra',
                 'owner_name' => 'سليمان يوسف'
             ],
 
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'WR02FKD',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'شاحنة',
+                'type' => 'sedan',
                 'model' => 'BMW 5 Series',
                 'owner_name' => 'سارة صالحة'
             ],
@@ -105,7 +105,7 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'EY61NBG',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'شاحنة',
+                'type' => 'suv',
                 'model' => 'Nissan Qashqai',
                 'owner_name' => 'سليمان يوسف'
             ],
@@ -114,7 +114,7 @@ class DatabaseSeeder extends Seeder
                 'country_code' => 'Britich',
                 'color' => 'أسود',
                 'type' => 'شاحنة',
-                'model' => 'Porche',
+                'model' => 'Smart Roadster',
                 'owner_name' => 'سليمان يوسف'
             ],
 
@@ -122,8 +122,8 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'BG65USJ',
                 'country_code' => 'Britich',
                 'color' => 'أبيض',
-                'type' => 'شاحنة',
-                'model' => 'Ford Trnsit',
+                'type' => 'minibus',
+                'model' => 'Ford Transit',
                 'owner_name' => 'سليمان يوسف'
             ],
 
@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'C52HYJ',
                 'country_code' => 'Britich',
                 'color' => 'أبيض',
-                'type' => 'شاحنة',
+                'type' => 'seda',
                 'model' => 'Volvo V70',
                 'owner_name' => 'سليمان يوسف'
             ],
@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'EF10DZT',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'شاحنة',
+                'type' => 'MPV',
                 'model' => 'Ford Fiesta',
                 'owner_name' => 'سليمان يوسف'
             ],
@@ -148,9 +148,74 @@ class DatabaseSeeder extends Seeder
                 'plate_number' => 'AK64DMV',
                 'country_code' => 'Britich',
                 'color' => 'أسود',
-                'type' => 'شاحنة',
+                'type' => 'suv',
                 'model' => 'Volkswagen Tiguan',
                 'owner_name' => 'سليمان يوسف'
+            ],
+
+            [
+                'plate_number' => 'K884RS',
+                'country_code' => 'Britich',
+                'color' => 'أبيض',
+                'type' => 'SUV',
+                'model' => 'Volkswagen Tiguan',
+                'owner_name' => 'علاء الأمين '
+            ],
+            [
+                'plate_number' => 'AF65JKV',
+                'country_code' => 'Britich',
+                'color' => 'أزرق',
+                'type' => 'hatchback',
+                'model' => 'Ford Fiesta',
+                'owner_name' => 'علاء الأمين '
+            ],
+            [
+                'plate_number' => 'KH06KSU',
+                'country_code' => 'Britich',
+                'color' => 'أسود',
+                'type' => 'MPV',
+                'model' => 'Citroen C4',
+                'owner_name' => 'علاء الأمين '
+            ],
+            [
+                'plate_number' => 'LN15ZZC',
+                'country_code' => 'Britich',
+                'color' => 'أسود',
+                'type' => 'hatchback',
+                'model' => 'Toyota	Auris',
+                'owner_name' => 'علاء الأمين '
+            ],
+            [
+                'plate_number' => 'DA07CLX',
+                'country_code' => 'Britich',
+                'color' => 'أسود',
+                'type' => 'hatchback',
+                'model' => 'Mazda 6',
+                'owner_name' => 'علاء الأمين '
+            ],
+            [
+                'plate_number' => 'WG65ZFX',
+                'country_code' => 'Britich',
+                'color' => 'أسود',
+                'type' => 'sedan',
+                'model' => 'Volvo V60',
+                'owner_name' => 'علاء الأمين '
+            ],
+            [
+                'plate_number' => 'WG65ZFX',
+                'country_code' => 'Britich',
+                'color' => 'أبيض',
+                'type' => 'minibus',
+                'model' => 'Ford Transit',
+                'owner_name' => 'علاء الأمين '
+            ],
+            [
+                'plate_number' => 'CE61WYL',
+                'country_code' => 'Britich',
+                'color' => 'أبيض',
+                'type' => 'MPV',
+                'model' => 'Volkswagen Caddy',
+                'owner_name' => 'علاء الأمين '
             ],
 
         ];
@@ -164,7 +229,8 @@ class DatabaseSeeder extends Seeder
 
         $statuses = ['مسروقة', 'مطلوبة أمنياً', 'مخالفة مرورية', 'حجز احتياطي'];
         $priorities = ['عالي', 'متوسط', 'منخفض'];
-        $blacklistedVehicles = $insertedVehicles->random(2);
+        $thirdCount = (int) ceil($insertedVehicles->count() / 3);
+        $blacklistedVehicles = $insertedVehicles->random($thirdCount);
 
         foreach ($blacklistedVehicles as $vehicle) {
             Blacklist::create([
